@@ -35,15 +35,15 @@ module.exports = {
 
   create: async (req, res, next) => {
     try {
-      const { nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa } = req.body;
+      const { nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, jenis_kelamin } = req.body;
 
-      if (!nama_siswa || !alamat_siswa || !tgl_siswa || !jurusan_siswa) {
+      if (!nama_siswa || !alamat_siswa || !tgl_siswa || !jurusan_siswa || !jenis_kelamin) {
         return res.status(400).json({ message: "Semua field harus diisi" });
       }
 
       const [result] = await pool.execute(
-        `INSERT INTO data_siswa (nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa) VALUES (?, ?, ?, ?)`,
-        [nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa]
+        `INSERT INTO data_siswa (nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, jenis_kelamin) VALUES (?, ?, ?, ?, ?)`,
+        [nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, jenis_kelamin]
       );
 
       res
@@ -54,6 +54,7 @@ module.exports = {
           alamat: alamat_siswa,
           tgl: tgl_siswa,
           jurusan: jurusan_siswa,
+          jenkel: jenis_kelamin
         });
     } catch (err) {
       next(err);
@@ -63,15 +64,15 @@ module.exports = {
   update: async (req, res, next) => {
     try {
       const id = parseInt(req.params.id, 10);
-      const { nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa } = req.body;
+      const { nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, jenis_kelamin } = req.body;
 
-      if (!nama_siswa || !alamat_siswa || !tgl_siswa || !jurusan_siswa) {
+      if (!nama_siswa || !alamat_siswa || !tgl_siswa || !jurusan_siswa || !jenis_kelamin) {
         return res.status(400).json({ message: "Semua field harus diisi" });
       }
 
       const [result] = await pool.execute(
-        `UPDATE data_siswa SET nama_siswa = ?, alamat_siswa = ?, tgl_siswa = ?, jurusan_siswa = ? WHERE kode_siswa = ?`,
-        [nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, id]
+        `UPDATE data_siswa SET nama_siswa = ?, alamat_siswa = ?, tgl_siswa = ?, jurusan_siswa = ?, jenis_kelamin = ? WHERE kode_siswa = ?`,
+        [nama_siswa, alamat_siswa, tgl_siswa, jurusan_siswa, jenis_kelamin, id]
       );
 
       if (result.affectedRows === 0)
